@@ -1,4 +1,4 @@
-const { MongoClient: client, ObjectId } = require('mongodb');
+const { MongoClient: client, ObjectID } = require('mongodb');
 
 const connectionURI =
   'mongodb+srv://test123:test123@cluster0.zzetb.mongodb.net/task-manager?retryWrites=true&w=majority';
@@ -8,39 +8,47 @@ client.connect(connectionURI, { useUnifiedTopology: true }, (error, client) => {
     return console.log('Failed to connect to the server');
   }
   const db = client.db('task-manager');
-  db.collection('task').insert([
-    {
-      task: 'update report',
-      describe: 'to update the college report for submission',
-      done: false,
-    },
-    {
-      task: 'clean',
-      describe: 'to clean the room',
-      done: false,
-    },
-    {
-      task: 'exam preparation',
-      describe: 'to prepare for the upcoming exams',
-      done: true,
-    },
-  ]);
-
-  db.collection('task')
-    .find({ done: false })
-    .toArray((err, tasks) => {
-      console.log(tasks);
+  db.collection('users')
+    .deleteMany({
+      name: 'rajive luitel',
+    })
+    .then((user) => {
+      console.log(user);
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  //   const db = client.db('task-manager');
-  //   db.collection('users')
-  //     .find({ age: 22 })
-  //     .toArray((err, users) => {
-  //       console.log(users);
-  //     });
-
-  //   db.collection('users')
-  //     .find({ age: 22 })
-  //     .count((err, count) => {
-  //       console.log(count);
-  //     });
+  // db.collection('task')
+  //   .updateMany(
+  //     { done: false },
+  //     {
+  //       $set: {
+  //         done: true,
+  //       },
+  //     }
+  //   )
+  //   .then((response) => {
+  //     console.log(response);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // // db.collection('users')
+  //   .updateOne(
+  //     {
+  //       _id: new ObjectID('6194adeec2dccdbc6498faf7'),
+  //     },
+  //     {
+  //       $set: {
+  //         name: 'rajive luitel',
+  //         age: 25,
+  //       },
+  //     }
+  //   )
+  //   .then((user) => {
+  //     console.log(user);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 });
