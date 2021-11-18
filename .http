@@ -16,4 +16,11 @@ content-type: {{content-type}}
 }
 
 ###
-get https://randomuser.me/
+post http://localhost:3000/tasks
+content-type: {{content-type}}
+
+{
+    "task": "Cleanup Room", 
+    "done": true, 
+    "describe": "Make the room neat, for that clean the room" 
+}

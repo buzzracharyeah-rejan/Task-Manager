@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
 const userModel = require('./models/user');
+const taskModel = require('./models/task');
+const server = require('./server.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -36,22 +38,25 @@ app.post('/users', (req, res, next) => {
     });
 });
 
-app.get('/', (req, res, next) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'say hi',
-  });
+app.post('/tasks', async (req, res, next) => {
+  const task = new taskModel({ ...req.body });
+  try {
+    const response = await task.save();
+    console.log(response);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        task,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'failed',
+      error: err.message,
+    });
+  }
 });
 
 app.listen(port, () => {
-  mongoose
-    .connect(
-      'mongodb+srv://test123:test123@cluster0.zzetb.mongodb.net/task-manager-api?retryWrites=true&w=majority'
-    )
-    .then(() => {
-      console.log('connected to the db successfully');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  server();
 });
