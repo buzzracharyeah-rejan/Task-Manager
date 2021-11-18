@@ -1,0 +1,19 @@
+@host = localhost
+@port = 3000
+@content-type = application/json
+###
+get http://{{host}}:{{port}}/
+
+###
+post http://localhost:3000/users
+content-type: {{content-type}}
+
+{
+"name": "rejan bajracharya", 
+"age": 22,
+"email": "rejandev@gmail.com", 
+"password": "test123"
+}
+
+###
+get https://randomuser.me/
