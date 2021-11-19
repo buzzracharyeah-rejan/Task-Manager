@@ -9,7 +9,6 @@ const { schema } = require('./models/user');
 
 const app = express();
 const port = process.env.PORT || 3000;
-debug('test app');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
