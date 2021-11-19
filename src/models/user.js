@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+const Joi = require('joi');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -12,32 +12,24 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
     lowercase: true,
-    validate: (email) => {
-      if (!validator.isEmail(email)) {
-        throw new Error('Email is invalid');
-      }
-    },
   },
   age: {
     type: Number,
     default: 0,
-    validate: (value) => {
-      if (value < 0) {
-        throw new Error('Age must be a positive number  ');
-      }
-    },
   },
   password: {
     type: String,
     required: true,
     trim: true,
-    minlength: [6, 'Password must be at least 6 characters'],
-    validate: (value) => {
-      if (value === 'password') {
-        throw new Error(`Password cannot be ${value}`);
-      }
-    },
   },
 });
 
-module.exports = mongoose.model('User', userSchema);
+const schema = Joi.object({
+  name: Joi.string().alphanum().min(3).max(30).required(),
+  age: Joi.number().min(0).max(100),
+  password: Joi.string().alphanum().min(8).max(30).required(),
+  email: Joi.string().email(),
+});
+
+const User = mongoose.model('User', userSchema);
+module.exports = { schema, User };

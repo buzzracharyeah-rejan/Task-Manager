@@ -1,4 +1,6 @@
-exports.getTasks = async (req, res, next) => {
+const taskModel = require('../models/task');
+
+exports.createTask = async (req, res, next) => {
   const task = new taskModel({ ...req.body });
   try {
     const response = await task.save();
@@ -19,21 +21,20 @@ exports.getTasks = async (req, res, next) => {
 
 exports.getTask = async (req, res, next) => {
   const _id = req.params.id;
-  console.log(_id);
   try {
     const task = await taskModel.findById(_id);
-    if (!task) {
+    if (task) {
       res.status(200).json({
         status: 'success',
         data: {
           task,
         },
       });
-      res.status(404).json({
-        status: 'failed',
-        error: 'task not found',
-      });
     }
+    res.status(404).json({
+      status: 'failed',
+      error: 'task not found',
+    });
   } catch (err) {
     res.status(500).json({
       status: 'failed',
@@ -42,7 +43,7 @@ exports.getTask = async (req, res, next) => {
   }
 };
 
-exports.createTask = async (req, res, next) => {
+exports.getTasks = async (req, res, next) => {
   try {
     const tasks = await taskModel.find();
     res.status(200).json({

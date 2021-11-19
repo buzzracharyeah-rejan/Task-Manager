@@ -8,22 +8,22 @@ get http://{{host}}:{{port}}/
 get http://localhost:3000/users
 
 ###
-get http://localhost:3000/users/61963e1fc49e32b642b2b6d5
+get http://localhost:3000/users/61973dea26dfa44df6b377bd
 ###
 post http://localhost:3000/users
 content-type: {{content-type}}
 
 {
-"name": "rejan bajracharya", 
+"name": "rejanb", 
 "age": 22,
 "email": "rejandev@gmail.com", 
-"password": "test123"
+"password": "test1234"
 }
 
 ###
 get http://localhost:3000/tasks
 ###
-get http://localhost:3000/tasks/619629423ab28b9161ca297f
+get http://localhost:3000/tasks/61973dfb26dfa44df6b377c4
 ###
 post http://localhost:3000/tasks
 content-type: {{content-type}}

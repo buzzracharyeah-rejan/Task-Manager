@@ -1,0 +1,11 @@
+exports.validate = (schema) => async (req, res, next) => {
+  try {
+    await schema.validateAsync({ ...req.body });
+    next();
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.details[0].message,
+    });
+  }
+};
