@@ -1,10 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
 const userModel = require('./models/user');
 const taskModel = require('./models/task');
 const server = require('./server.js');
+const userController = require('./controllers/userController');
+const taskController = require('./controllers/taskController');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,50 +13,42 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.post('/users', (req, res, next) => {
-  const { name, age, email, password } = req.body;
+app.post('/users', userController.createUser());
 
-  const user = new userModel({
-    name,
-    age,
-    email,
-    password,
-  });
+app.get('/users', userController.getUsers());
 
-  user
-    .save()
-    .then((data) => {
-      console.log(data);
-      res.status(201).json({
-        status: 'success',
-        data: {
-          user,
-        },
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+app.get('/users/:id', userController.getUser());
+// app.get('/users/:id', async (req, res, next) => {
+//   const _id = req.params.id;
+//   userModel
+//     .findById(_id)
+//     .then((user) => {
+//       if (!user) {
+//         res.status(404).json({
+//           status: 'failed',
+//           error: 'User not found',
+//         });
+//         res.status(200).json({
+//           status: 'success',
+//           data: {
+//             user,
+//           },
+//         });
+//       }
+//     })
+//     .catch((error) => {
+//       res.status(500).json({
+//         status: 'failed',
+//         error: error.message,
+//       });
+//     });
+// });
 
-app.post('/tasks', async (req, res, next) => {
-  const task = new taskModel({ ...req.body });
-  try {
-    const response = await task.save();
-    console.log(response);
-    res.status(201).json({
-      status: 'success',
-      data: {
-        task,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'failed',
-      error: err.message,
-    });
-  }
-});
+app.get('/tasks', taskController.getTasks());
+
+app.get('/tasks/:id', taskController.getTask());
+
+app.post('/tasks', taskController.createTask());
 
 app.listen(port, () => {
   server();

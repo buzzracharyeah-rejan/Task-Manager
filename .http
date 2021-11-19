@@ -5,6 +5,11 @@
 get http://{{host}}:{{port}}/
 
 ###
+get http://localhost:3000/users
+
+###
+get http://localhost:3000/users/61963e1fc49e32b642b2b6d5
+###
 post http://localhost:3000/users
 content-type: {{content-type}}
 
@@ -15,6 +20,10 @@ content-type: {{content-type}}
 "password": "test123"
 }
 
+###
+get http://localhost:3000/tasks
+###
+get http://localhost:3000/tasks/619629423ab28b9161ca297f
 ###
 post http://localhost:3000/tasks
 content-type: {{content-type}}
