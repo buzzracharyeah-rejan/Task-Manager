@@ -16,10 +16,13 @@ app.use(express.json());
 app.get('/users', userController.getUsers);
 app.get('/users/:id', userController.getUser);
 app.post('/users', validator.validate(schema), userController.createUser);
+app.patch('/users/:id', validator.validate(schema), userController.updateUser);
+app.delete('/users/:id', userController.deleteUser);
 
 app.get('/tasks', taskController.getTasks);
 app.get('/tasks/:id', taskController.getTask);
 app.post('/tasks', taskController.createTask);
+app.patch('/tasks/:id', taskController.updateTasks);
 
 app.listen(port, () => {
   server();

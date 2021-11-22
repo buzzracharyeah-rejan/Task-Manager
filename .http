@@ -4,12 +4,13 @@
 ###
 get http://{{host}}:{{port}}/
 
-###
+### get users
 get http://localhost:3000/users
 
-###
+### get users by id
 get http://localhost:3000/users/61973dea26dfa44df6b377bd
-###
+
+### create new user
 post http://localhost:3000/users
 content-type: {{content-type}}
 
@@ -19,6 +20,20 @@ content-type: {{content-type}}
 "email": "rejandev@gmail.com", 
 "password": "test1234"
 }
+
+### update a user
+patch http://localhost:3000/users/61973dea26dfa44df6b377bd
+content-type: application/json 
+
+{
+    "name": "sometest", 
+    "age": 22, 
+    "email": "test@icom", 
+    "password": "testfdsa123"
+}
+
+### delete a user 
+delete http://localhost:3000/users/61973dea26dfa44df6b377bd
 
 ###
 get http://localhost:3000/tasks
@@ -32,4 +47,14 @@ content-type: {{content-type}}
     "task": "Cleanup Room", 
     "done": true, 
     "describe": "Make the room neat, for that clean the room" 
+}
+
+###
+patch http://localhost:3000/tasks/61977f239eae069a2e6e987b
+content-type: application/json 
+
+{
+    "task": "some new task", 
+    "describe": "some new task went wrong", 
+    "done": false
 }

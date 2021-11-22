@@ -1,5 +1,10 @@
+const path = require('path');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv');
+
+const rootDir = require('../rootdir');
+
+dotenv.config(path.join(rootDir, '/.env'));
 
 module.exports = () => {
   mongoose
