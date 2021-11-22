@@ -65,22 +65,21 @@ exports.updateTask = async (req, res, next) => {
   const allowedUpdates = ['task', 'done', 'describe'];
   const isValid = updates.every((update) => allowedUpdates.includes(update));
   if (!isValid) {
-    res.status(400).json({
+    return res.status(400).json({
       status: 'failed',
       error: 'Invalid update operation',
     });
   }
 
   try {
-    const updatedTask = await Task.findByIdAndUpdate(
-      req.params.id,
-      { ...req.body },
-      { new: true, runValidators: true }
-    );
+    const task = await Task.findById(req.params.id);
+    updates.forEach((update) => (task[update] = req.body[update]));
+    await task.save();
+
     res.status(201).json({
       status: 'success',
       data: {
-        task: updatedTask,
+        task,
       },
     });
   } catch (error) {

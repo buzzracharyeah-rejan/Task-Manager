@@ -8,7 +8,7 @@ get http://{{host}}:{{port}}/
 get http://localhost:3000/user
 
 ### get users by id
-get http://localhost:3000/user/61973dea26dfa44df6b377bd
+get http://localhost:3000/user/619b473678749488da46fd22
 
 ### create new user
 post http://localhost:3000/user
@@ -22,14 +22,14 @@ content-type: {{content-type}}
 }
 
 ### update a user
-patch http://localhost:3000/user/61973dea26dfa44df6b377bd
+patch http://localhost:3000/user/619b4a240d6363c42205441c
 content-type: application/json 
 
 {
-    "name": "sometest", 
+    "name": "test", 
     "age": 22, 
-    "email": "test@icom", 
-    "password": "testfdsa123"
+    "email": "test@test.com", 
+    "password": "test1234"
 }
 
 ### delete a user 
@@ -38,23 +38,21 @@ delete http://localhost:3000/users/61973dea26dfa44df6b377bd
 ###
 get http://localhost:3000/task
 ###
-get http://localhost:3000/tasks/61973dfb26dfa44df6b377c4
+get http://localhost:3000/task/619b54768063c0730c362307
 ###
 post http://localhost:3000/task
 content-type: {{content-type}}
 
 {
-    "task": "Cleanup Room", 
+    "task": "Code Cleanup", 
     "done": true, 
     "describe": "Make the room neat, for that clean the room" 
 }
 
-###
-patch http://localhost:3000/task/61977f239eae069a2e6e987b
-content-type: application/json 
+### update task 
+patch http://localhost:3000/task/61973dfb26dfa44df6b377c4
+content-type: application/json
 
 {
-    "task": "some new task", 
-    "describe": "some new task went wrong", 
     "done": false
 }

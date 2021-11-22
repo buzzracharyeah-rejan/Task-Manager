@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -31,5 +32,16 @@ const schema = Joi.object({
   email: Joi.string().email(),
 });
 
+userSchema.pre('save', async function (next) {
+  console.log('just before saving!');
+  const user = this;
+  if (user.isModified('password')) {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+  }
+
+  next();
+});
 const User = mongoose.model('User', userSchema);
+
 module.exports = { schema, User };

@@ -1,19 +1,19 @@
-const add = async (a, b) => {
-  setTimeout(() => {
-    return a + b;
-  }, 2000);
+const add = (a, b) => {
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(a + b);
+    }, 2000);
+  });
+  return promise;
 };
 
-add(1, 2).then((result) => console.log(result));
+const doSomething = async () => {
+  const res1 = await add(1, 2);
+  const res2 = await add(res1, 3);
+  const res3 = await add(res2, 3);
 
-// const doWork = async () => {
-//   return await add(1, 2);
-// };
+  console.log(res3);
+  console.log('say hello');
+};
 
-// doWork()
-//   .then((result) => {
-//     console.log(`result: ${result}`);
-//   })
-//   .catch((err) => {
-//     console.log(`error: ${err}`);
-//   });
+doSomething();

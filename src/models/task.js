@@ -21,5 +21,9 @@ const taskSchema = new mongoose.Schema({
   },
 });
 
+taskSchema.pre('save', function (next) {
+  console.log('pre save hook');
+  next();
+});
 const Task = new mongoose.model('Task', taskSchema);
 module.exports = Task;
