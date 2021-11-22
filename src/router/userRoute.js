@@ -4,10 +4,7 @@ const userController = require('../controllers/userController');
 const { schema } = require('../models/user');
 const validator = require('../utils/validator');
 
-router
-  .route('/user')
-  .get(userController.getUsers)
-  .post(validator.validate(schema), userController.createUser);
+router.route('/user').get(userController.getUsers);
 
 router
   .route('/user/:id')

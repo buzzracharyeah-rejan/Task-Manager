@@ -7,6 +7,7 @@ exports.getUsers = (req, res, next) => {
       debug(user);
       res.status(200).json({
         status: 'success',
+        length: user.length,
         data: {
           users: user,
         },
@@ -25,7 +26,7 @@ exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id });
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         status: 'failed',
         error: 'user not found',
       });
@@ -44,24 +45,25 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
-exports.createUser = (req, res, next) => {
-  console.log('create user');
-  const user = new User({ ...req.body });
-
-  user
-    .save()
-    .then(() => {
-      res.status(201).json({
-        status: 'success',
-        data: {
-          user,
-        },
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+// exports.createUser = (req, res, next) => {
+//   const user = new User({ ...req.body });
+//   user
+//     .save()
+//     .then(() => {
+//       res.status(201).json({
+//         status: 'success',
+//         data: {
+//           user,
+//         },
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(400).json({
+//         status: 'failed',
+//         error: err.message,
+//       });
+//     });
+// };
 
 exports.updateUser = async (req, res, next) => {
   const updates = Object.keys(req.body);
@@ -105,7 +107,7 @@ exports.deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         status: 'failed',
         error: 'user not found',
       });

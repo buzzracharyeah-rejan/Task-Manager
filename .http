@@ -11,18 +11,18 @@ get http://localhost:3000/user
 get http://localhost:3000/user/619b473678749488da46fd22
 
 ### create new user
-post http://localhost:3000/user
+post http://localhost:3000/signup
 content-type: {{content-type}}
 
 {
-"name": "rejanb", 
+"name": "arund", 
 "age": 22,
-"email": "rejandev@gmail.com", 
+"email": "arundai@gmail.com", 
 "password": "test1234"
 }
 
 ### update a user
-patch http://localhost:3000/user/619b4a240d6363c42205441c
+patch http://localhost:3000/user/619b662983e4634b98924797
 content-type: application/json 
 
 {
@@ -40,7 +40,7 @@ post http://localhost:3000/login
 content-type: application/json
 
 {
-    "email": "rejandev@gmail.com", 
+    "email": "test@test.com", 
     "password": "test1234"
 }
 ###

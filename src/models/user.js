@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 
@@ -10,6 +11,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     trim: true,
     lowercase: true,
@@ -23,6 +25,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 const schema = Joi.object({
@@ -32,31 +42,27 @@ const schema = Joi.object({
   email: Joi.string().email(),
 });
 
+// methods for user model
+userSchema.methods.generateAuthToken = async function () {
+  const token = await jwt.sign({ _id: this._id.toString() }, 'shhh');
+  this.tokens = this.tokens.concat({ token });
+  this.save();
+};
+
 // static methods for models
 userSchema.statics.findByCredentials = async (email, password) => {
-  try {
-    const user = User.findOne({ email });
-    if (!user) {
-      throw new Error('Unable to login');
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      throw new Error('Unable to login');
-    }
-    res.status(200).json({
-      status: 'success',
-      data: { user },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'failed',
-      error: error.message,
-    });
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error('Unable to login');
   }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error('Unable to login');
+  }
+  return user;
 };
 // pre-save middleware to hash passwords
 userSchema.pre('save', async function (next) {
-  console.log('just before saving!');
   const user = this;
   if (user.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
