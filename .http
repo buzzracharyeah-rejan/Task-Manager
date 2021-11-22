@@ -5,13 +5,13 @@
 get http://{{host}}:{{port}}/
 
 ### get users
-get http://localhost:3000/users
+get http://localhost:3000/user
 
 ### get users by id
-get http://localhost:3000/users/61973dea26dfa44df6b377bd
+get http://localhost:3000/user/61973dea26dfa44df6b377bd
 
 ### create new user
-post http://localhost:3000/users
+post http://localhost:3000/user
 content-type: {{content-type}}
 
 {
@@ -22,7 +22,7 @@ content-type: {{content-type}}
 }
 
 ### update a user
-patch http://localhost:3000/users/61973dea26dfa44df6b377bd
+patch http://localhost:3000/user/61973dea26dfa44df6b377bd
 content-type: application/json 
 
 {
@@ -36,11 +36,11 @@ content-type: application/json
 delete http://localhost:3000/users/61973dea26dfa44df6b377bd
 
 ###
-get http://localhost:3000/tasks
+get http://localhost:3000/task
 ###
 get http://localhost:3000/tasks/61973dfb26dfa44df6b377c4
 ###
-post http://localhost:3000/tasks
+post http://localhost:3000/task
 content-type: {{content-type}}
 
 {
@@ -50,7 +50,7 @@ content-type: {{content-type}}
 }
 
 ###
-patch http://localhost:3000/tasks/61977f239eae069a2e6e987b
+patch http://localhost:3000/task/61977f239eae069a2e6e987b
 content-type: application/json 
 
 {

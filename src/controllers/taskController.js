@@ -60,7 +60,7 @@ exports.getTasks = async (req, res, next) => {
   }
 };
 
-exports.updateTasks = async (req, res, next) => {
+exports.updateTask = async (req, res, next) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['task', 'done', 'describe'];
   const isValid = updates.every((update) => allowedUpdates.includes(update));

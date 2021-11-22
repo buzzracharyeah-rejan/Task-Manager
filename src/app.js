@@ -1,11 +1,9 @@
 const express = require('express');
-const debug = require('debug')('app');
 
 const server = require('./server.js');
-const userController = require('./controllers/userController');
-const taskController = require('./controllers/taskController');
 const validator = require('./utils/validator');
-const { schema } = require('./models/user');
+const userRouter = require('./router/userRoute');
+const taskRouter = require('./router/taskRoute');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,16 +11,8 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/users', userController.getUsers);
-app.get('/users/:id', userController.getUser);
-app.post('/users', validator.validate(schema), userController.createUser);
-app.patch('/users/:id', validator.validate(schema), userController.updateUser);
-app.delete('/users/:id', userController.deleteUser);
-
-app.get('/tasks', taskController.getTasks);
-app.get('/tasks/:id', taskController.getTask);
-app.post('/tasks', taskController.createTask);
-app.patch('/tasks/:id', taskController.updateTasks);
+app.use(userRouter);
+app.use(taskRouter);
 
 app.listen(port, () => {
   server();
