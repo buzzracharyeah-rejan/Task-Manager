@@ -32,6 +32,29 @@ const schema = Joi.object({
   email: Joi.string().email(),
 });
 
+// static methods for models
+userSchema.statics.findByCredentials = async (email, password) => {
+  try {
+    const user = User.findOne({ email });
+    if (!user) {
+      throw new Error('Unable to login');
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new Error('Unable to login');
+    }
+    res.status(200).json({
+      status: 'success',
+      data: { user },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'failed',
+      error: error.message,
+    });
+  }
+};
+// pre-save middleware to hash passwords
 userSchema.pre('save', async function (next) {
   console.log('just before saving!');
   const user = this;
