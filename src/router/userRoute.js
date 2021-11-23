@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const { schema } = require('../models/user');
-const validator = require('../utils/validator');
+const auth = require('../middlewares/auth');
+const validator = require('../middlewares/validator');
 
-router.route('/user').get(userController.getUsers);
+router.route('/user/me').get(auth, userController.getUsers);
 
 router
   .route('/user/:id')

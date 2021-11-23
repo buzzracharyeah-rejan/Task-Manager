@@ -2,23 +2,12 @@ const debug = require('debug')('user');
 const { User } = require('../models/user');
 
 exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((user) => {
-      debug(user);
-      res.status(200).json({
-        status: 'success',
-        length: user.length,
-        data: {
-          users: user,
-        },
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        status: 'failed',
-        error: error.message,
-      });
-    });
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: req.user,
+    },
+  });
 };
 
 exports.getUser = async (req, res, next) => {

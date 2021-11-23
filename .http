@@ -1,11 +1,13 @@
 @host = localhost
 @port = 3000
 @content-type = application/json
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTliNjYyOTgzZTQ2MzRiOTg5MjQ3OTciLCJpYXQiOjE2Mzc1ODE2MTB9.acsCddD2unUEPZ55nqrQXP1kQwRdST-5BTuQnc_cxYw
 ###
 get http://{{host}}:{{port}}/
 
 ### get users
-get http://localhost:3000/user
+get http://localhost:3000/user/me
+Authorization: Bearer {{token}}
 
 ### get users by id
 get http://localhost:3000/user/619b473678749488da46fd22
@@ -17,7 +19,7 @@ content-type: {{content-type}}
 {
 "name": "arund", 
 "age": 22,
-"email": "arundai@gmail.com", 
+"email": "test@gmail.com", 
 "password": "test1234"
 }
 
