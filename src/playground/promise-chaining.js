@@ -1,28 +1,16 @@
 const server = require('../server')();
-// const server = require('../server')();
+const Task = require('../models/task');
+const User = require('../models/user');
 
-// dotenv.config({ path: path.join(rootDir, '.env') });
-// dotenv.config();
+const populateTasks = async () => {
+  try {
+    // const task = await Task.populate('owner').execPopulate();
+    const task = await Task.findOne({ _id: '619f4d09a8e866a293790df4' });
+    await task.populate('owner');
+    console.log(task);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-// const uri = process.env.CONNECTION_URI;
-
-// mongoose
-//   .connect(uri)
-//   .then(() => console.log('connected successfully'))
-//   .catch((err) => console.log(err));
-// const userModel = require('../models/user');
-
-// // 61973dea26dfa44df6b377bd
-// const _id = '61973dea26dfa44df6b377bd';
-// userModel
-//   .findByIdAndUpdate(_id, { age: 1 })
-//   .then((user) => {
-//     console.log(user);
-//     return userModel.countDocuments({ age: 1 });
-//   })
-//   .then((result) => {
-//     console.log(result);
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
+populateTasks();

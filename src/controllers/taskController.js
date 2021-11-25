@@ -24,18 +24,30 @@ exports.getTask = async (req, res, next) => {
 
 exports.getTasks = async (req, res, next) => {
   try {
-    const tasks = await Task.find({ owner: req.user._id });
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tasks,
+    // await req.user.populate('tasks').execPopulate();
+    // const task = await Task.find({ owner: req.user._id });
+    // const task = await Task.find({
+    //   owner: req.user._id,
+    //   completed: req.query.completed,
+    // });
+    const match = { completed: req.query.completed || false };
+    const sortType = req.query.sort || 'asc';
+
+    await req.user.populate({
+      path: 'tasks',
+      match,
+      options: {
+        limit: parseInt(req.query.limit),
+        skip: parseInt(req.query.skip),
+        sort: {
+          createdAt: sortType === 'asc' ? 1 : -1,
+        },
       },
     });
+
+    res.status(200).json({ task: req.user.tasks });
   } catch (err) {
-    res.status(500).json({
-      status: 'failed',
-      error: err.message,
-    });
+    res.status(500).json({ error: err.message });
   }
 };
 

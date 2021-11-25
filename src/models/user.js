@@ -3,37 +3,40 @@ const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A user must require a name'],
-    trim: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true,
-    lowercase: true,
-  },
-  age: {
-    type: Number,
-    default: 0,
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'A user must require a name'],
+      trim: true,
     },
-  ],
-});
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  { timestamps: true, toJSON: { virtuals: true } }
+);
 
 const schema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -57,13 +60,14 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-userSchema.methods.toJSON = function () {
-  const user = this;
-  const userObj = user.toObject();
-  delete userObj.password;
-  delete userObj.tokens;
-  return userObj;
-};
+// userSchema.methods.toJSON = function () {
+//   virtuals: true;
+//   const user = this;
+//   const userObj = user.toObject();
+//   delete userObj.password;
+//   delete userObj.tokens;
+//   return userObj;
+// };
 
 // static methods for models
 userSchema.statics.findByCredentials = async (email, password) => {
