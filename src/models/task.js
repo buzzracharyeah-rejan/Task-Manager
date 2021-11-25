@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const { User } = require('./user');
 
 const taskSchema = new mongoose.Schema({
   task: {
@@ -7,23 +8,21 @@ const taskSchema = new mongoose.Schema({
     required: [true, 'Task name required'],
     trim: true,
   },
-  done: {
-    type: Boolean,
-    default: false,
-  },
-  describe: {
+  description: {
     type: String,
-    required: true,
+    required: [true, 'Task description required'],
     trim: true,
-    validate(value) {
-      console.log(value);
-    },
+  },
+  completed: {
+    type: Boolean,
+    required: [true, 'Task completion status required'],
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
   },
 });
 
-taskSchema.pre('save', function (next) {
-  console.log('pre save hook');
-  next();
-});
 const Task = new mongoose.model('Task', taskSchema);
 module.exports = Task;

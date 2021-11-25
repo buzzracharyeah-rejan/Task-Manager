@@ -45,10 +45,9 @@ exports.signup = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   try {
-    debug({ user: req.user, token: req.token });
     const { user, token } = req;
     user.tokens = user.tokens.filter((t) => t.token !== token);
-    // req.user.tokens = req.user.tokens((token) => token.token !== req.token);
+    // req.user.tokens = req.user.tokensreq.((token) => token.token !== req.token);
     // console.log(req.user.tokens);
     // console.log(req.user);
     await user.save();

@@ -42,12 +42,27 @@ const schema = Joi.object({
   email: Joi.string().email(),
 });
 
+// setup virtuals
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'owner',
+});
+
 // methods for user model
 userSchema.methods.generateAuthToken = async function () {
   const token = await jwt.sign({ _id: this._id.toString() }, 'shhh');
   this.tokens = this.tokens.concat({ token });
   this.save();
   return token;
+};
+
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObj = user.toObject();
+  delete userObj.password;
+  delete userObj.tokens;
+  return userObj;
 };
 
 // static methods for models

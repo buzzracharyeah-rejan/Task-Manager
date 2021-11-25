@@ -1,0 +1,94 @@
+@host = http://localhost:3000
+@port = 3000
+@content-type = application/json
+@token = {{login.response.body.data.token}}
+
+###
+# some generic request mapping
+get http://{{host}}:{{port}}/
+
+### get user profile
+get http://localhost:3000/user/me
+Authorization: Bearer {{token}}
+
+### get user by id (doesn't work now)
+get http://localhost:3000/user/619b473678749488da46fd22
+
+### User signup (create a new user)
+post http://localhost:3000/signup
+content-type: {{content-type}}
+
+{
+"name": "rejandev", 
+"age": 22,
+"email": "rejandev@gmail.com", 
+"password": "test1234"
+}
+
+### Update a user profile
+### This request is using bearer token
+patch http://localhost:3000/user/me
+Authorization: Bearer {{token}}
+content-type: application/json 
+
+{
+    "name": "test1",
+    "age": 23, 
+    "email": "test1@test.com", 
+    "password": "test1234"
+}
+
+### Delete a user
+### This request is using Bearer Token
+delete http://localhost:3000/user/me
+Authorization: Bearer {{token}}
+
+### user login
+# @name login
+post http://localhost:3000/login
+content-type: application/json
+
+{
+    "email": "test1@test.com", 
+    "password": "test1234"
+}
+
+### Logout User
+### This request is using Bearer token
+post http://localhost:3000/logout
+Authorization: Bearer {{token}}
+###
+
+### Logout User from all devices
+### This request is using bearer token
+post http://localhost:3000/logoutAll
+Authorization: Bearer {{token}}
+
+
+### Get all tasks
+get {{host}}/task
+Authorization: Bearer {{token}}
+
+### Get a task
+get {{host}}/task/619f14a05feaf2888cd7c354
+Authorization: Bearer {{token}}
+
+### Create a new task
+post {{host}}/task
+content-type: {{content-type}}
+Authorization: Bearer {{token}}
+
+{
+    "task": "Test code", 
+    "completed": true, 
+    "description": "Make the room neat, for that clean the room" 
+}
+
+### update task 
+patch {{host}}/task/619f14a05feaf2888cd7c354
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "completed": false
+}

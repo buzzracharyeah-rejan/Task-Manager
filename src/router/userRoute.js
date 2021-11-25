@@ -5,12 +5,10 @@ const { schema } = require('../models/user');
 const auth = require('../middlewares/auth');
 const validator = require('../middlewares/validator');
 
-router.route('/user/me').get(auth, userController.getUsers);
-
 router
-  .route('/user/:id')
-  .get(userController.getUser)
-  .delete(userController.deleteUser)
-  .patch(validator.validate(schema), userController.updateUser);
+  .route('/user/me')
+  .get(auth, userController.getUsers)
+  .delete(auth, userController.deleteUser)
+  .patch([auth, validator.validate(schema)], userController.updateUser);
 
 module.exports = router;
