@@ -1,6 +1,7 @@
 const debug = require('debug')('auth');
 const bcrypt = require('bcryptjs');
 const { User } = require('../models/user');
+const { sendWelcomeEmail } = require('../emails/accounts');
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -8,18 +9,9 @@ exports.login = async (req, res, next) => {
     const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();
     // await user.save();
-    res.status(200).json({
-      status: 'success',
-      data: {
-        user,
-        token,
-      },
-    });
+    res.status(200).json({ user, token });
   } catch (error) {
-    res.status(400).json({
-      status: 'failed',
-      error: error.message,
-    });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -28,18 +20,10 @@ exports.signup = async (req, res, next) => {
     const user = new User({ ...req.body });
     // await user.save();
     const token = await user.generateAuthToken();
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user,
-        token,
-      },
-    });
+    sendWelcomeEmail(req.body.email, req.body.name);
+    res.status(201).json({ user, token });
   } catch (error) {
-    res.status(400).json({
-      status: 'failed',
-      error: error.message,
-    });
+    res.status(400).json({ error: error.message });
   }
 };
 
